@@ -1,0 +1,47 @@
+{
+    "UT1": {
+        "diem_cong": 2.0,
+        "doi_tuong": [
+            {
+                "id": "01",
+                "ten": "Người dân tộc thiểu số học tại khu vực 1",
+                "mo_ta": "Công dân Việt Nam là người dân tộc thiểu số có hộ khẩu thường trú trên 18 tháng tại Khu vực 1 trong thời gian học THPT hoặc trung cấp."
+            },
+            {
+                "id": "02",
+                "ten": "Công nhân sản xuất có thành tích thi đua",
+                "mo_ta": "Công nhân trực tiếp sản xuất làm việc liên tục 5 năm trở lên, có ít nhất 2 năm là chiến sĩ thi đua cấp tỉnh trở lên, được cấp bằng khen."
+            },
+            {
+                "id": "03",
+                "ten": "Thương binh, bệnh binh, quân nhân, công an",
+                "mo_ta": "Thương binh, bệnh binh, người hưởng chính sách như thương binh, hoặc quân nhân/công an có thời gian phục vụ đủ theo quy định hoặc đã xuất ngũ đúng quy định."
+            },
+            {
+                "id": "04",
+                "ten": "Thân nhân người có công, nạn nhân chất độc hóa học",
+                "mo_ta": "Con thân nhân liệt sĩ, con thương binh/bệnh binh suy giảm từ 81%, con của người nhiễm chất độc hóa học, con anh hùng LLVT, con anh hùng lao động thời kháng chiến,..."
+            }
+        ]
+    },
+    "UT2": {
+        "diem_cong": 1.0,
+        "doi_tuong": [
+            {
+                "id": "05",
+                "ten": "Thanh niên xung phong, quân nhân, dân quân tự vệ",
+                "mo_ta": "Thanh niên xung phong được cử đi học; Quân nhân/Công an tại ngũ được cử đi học có thời gian phục vụ dưới 12 tháng tại KV1 hoặc dưới 18 tháng không ở KV1; Chỉ huy ban quân sự cấp xã, dân quân tự vệ nòng cốt từ 12 tháng trở lên, thi vào ngành Quân sự cơ sở (ưu tiên tối đa 18 tháng kể từ ngày xuất ngũ)."
+            },
+            {
+                "id": "06",
+                "ten": "Con thương binh, người dân tộc ngoài KV1",
+                "mo_ta": "Người dân tộc thiểu số có hộ khẩu thường trú ở ngoài khu vực 1; con thương binh, bệnh binh, người hưởng chính sách như thương binh bị suy giảm lao động dưới 81%; con người bị nhiễm chất độc hóa học suy giảm dưới 81%."
+            },
+            {
+                "id": "07",
+                "ten": "Người khuyết tật, giáo viên, người lao động ưu tú",
+                "mo_ta": "Người khuyết tật nặng có giấy xác nhận; Người lao động ưu tú được công nhận thợ giỏi, nghệ nhân; Giáo viên giảng dạy đủ 3 năm trở lên thi vào ngành sư phạm; Trung cấp y/dược/kỹ thuật viên công tác đủ 3 năm thi vào nhóm ngành sức khỏe."
+            }
+        ]
+    }
+}

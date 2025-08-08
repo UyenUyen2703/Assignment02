@@ -1,0 +1,207 @@
+[
+    {
+        "id": "106",
+        "nganh": "Khoa học Máy tính",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "107",
+        "nganh": "Kỹ Thuật Máy tính",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "108",
+        "nganh": "Điện - Điện Tử - Viễn Thông - Tự Động Hóa - Thiết Kế Vi Mạch",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "109",
+        "nganh": "Kỹ Thuật Cơ khí",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "110",
+        "nganh": "Kỹ Thuật Cơ Điện Tử",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "112",
+        "nganh": "Dệt - May",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "114",
+        "nganh": "Hóa - Thực Phẩm - Sinh Học",
+        "toHopMon": "A00 - B00 - D07"
+    },
+    {
+        "id": "115",
+        "nganh": "Xây Dựng & Quản Lý Dự Án Xây Dựng",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "117",
+        "nganh": "Kiến trúc",
+        "toHopMon": "A00 - C01"
+    },
+    {
+        "id": "120",
+        "nganh": "Dầu Khí - Địa Chất",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "123",
+        "nganh": "Quản Lý Công Nghiệp",
+        "toHopMon": "A00 - A01 - D01 - D07"
+    },
+    {
+        "id": "125",
+        "nganh": "Tài Nguyên & Môi Trường",
+        "toHopMon": "A00 - A01 - B00 - D07"
+    },
+    {
+        "id": "128",
+        "nganh": "Logistics & Hệ Thống Công Nghiệp",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "129",
+        "nganh": "Kỹ Thuật Vật Liệu",
+        "toHopMon": "A00 - A01 - D07"
+    },
+    {
+        "id": "137",
+        "nganh": "Vật lý Kỹ Thuật",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "138",
+        "nganh": "Cơ Kỹ Thuật",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "140",
+        "nganh": "Kỹ Thuật Nhiệt",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "141",
+        "nganh": "Bảo Dưỡng Công Nghiệp",
+        "toHopMon": "A00 - A01 - D07"
+    },
+    {
+        "id": "142",
+        "nganh": "Kỹ Thuật Ô Tô",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "145",
+        "nganh": "Tàu Thủy - Hàng Không (Song Ngành)",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "206",
+        "nganh": "Khoa Học Máy tính",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "207",
+        "nganh": "Kỹ Thuật Máy Tính",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "208",
+        "nganh": "Kỹ Thuật Điện - Điện tử",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "209",
+        "nganh": "Kỹ Thuật Cơ Khí",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "210",
+        "nganh": "Kỹ Thuật Cơ Điện Tử",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "211",
+        "nganh": "Kỹ Thuật Robot",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "214",
+        "nganh": "Kỹ Thuật Hóa Học",
+        "toHopMon": "A00 - B00 - D07"
+    },
+    {
+        "id": "215",
+        "nganh": "Quản Lý Dự Án Xây Dựng & Kỹ Thuật Xây Dựng",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "217",
+        "nganh": "Kiến Trúc Cảnh Quan",
+        "toHopMon": "A01 - C01"
+    },
+    {
+        "id": "218",
+        "nganh": "Công Nghệ Sinh Học",
+        "toHopMon": "A00 - B00 - B08 - D07"
+    },
+    {
+        "id": "219",
+        "nganh": "Công Nghệ Thực Phẩm",
+        "toHopMon": "A00 - B00 - D07"
+    },
+    {
+        "id": "220",
+        "nganh": "Kỹ Thuật Dầu Khí",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "223",
+        "nganh": "Quản lý Công nghiệp",
+        "toHopMon": "A00 - A01 - D01 - D07"
+    },
+    {
+        "id": "225",
+        "nganh": "Tài Nguyên & Môi trường",
+        "toHopMon": "A00 - A01 - B00 - D07"
+    },
+    {
+        "id": "228",
+        "nganh": "Logistics & Hệ Thống Công Nghiệp",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "229",
+        "nganh": "Kỹ Thuật Vật Liệu",
+        "toHopMon": "A00 - A01 - D07"
+    },
+    {
+        "id": "237",
+        "nganh": "Kỹ Thuật Y Sinh",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "242",
+        "nganh": "Kỹ Thuật Ô Tô",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "245",
+        "nganh": "Kỹ Thuật Hàng Không",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "266",
+        "nganh": "Khoa học Máy tính",
+        "toHopMon": "A00 - A01"
+    },
+    {
+        "id": "268",
+        "nganh": "Cơ Kỹ Thuật",
+        "toHopMon": "A00 - A01 - B00 - D01 - D07"
+    }
+]

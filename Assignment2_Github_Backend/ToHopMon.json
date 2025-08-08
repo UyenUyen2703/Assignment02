@@ -1,0 +1,661 @@
+[
+  {
+    "chuongtrinh" : "CHƯƠNG TRÌNH TIÊU CHUẨN",
+    "nganh":[
+      {
+        "maNganh": "106",
+        "tenNganh": "Khoa học Máy tính",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "107",
+        "tenNganh": "Kỹ thuật Máy tính",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "108",
+        "tenNganh": "Điện - Điện tử - Viễn Thông - Tự động hoá - Thiết kế vi mạch",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "109",
+        "tenNganh": "Kỹ thuật Cơ Khí",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "110",
+        "tenNganh": "Kỹ thuật Cơ Điện Tử",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "112",
+        "tenNganh": "Dệt - May",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "128",
+        "tenNganh": "Logistics và Hệ thống Công nghiệp ",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "140",
+        "tenNganh": "Kỹ thuật Nhiệt",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "114",
+        "tenNganh": "Hoá - Thực phẩm - Sinh học",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Sinh","Anh"],
+            "monTuChon": null
+          }
+        ]
+      },
+      {
+        "maNganh": "115",
+        "tenNganh": "Xây dựng và Quản lý Dự án Xây dựng",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "117",
+        "tenNganh": "Kiến trúc",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Anh", "Công nghệ"]
+          },
+          {
+            "monChinh":["Toán", "Văn"],
+            "monTuChon": ["Anh", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "148",
+        "tenNganh": "Kinh tế Xây dựng",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "120",
+        "tenNganh": "Dầu khí - Địa chất",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "147",
+        "tenNganh": "Địa Kỹ thuật Xây dựng",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "129",
+        "tenNganh": "Kỹ thuật Vật liệu",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh", "Anh", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "137",
+        "tenNganh": "Vật lý Kỹ thuật",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Sinh","Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "138",
+        "tenNganh": "Cơ Kỹ thuật",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "146",
+        "tenNganh": "Khoa học Dữ liệu",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "142",
+        "tenNganh": "Kỹ thuật Ô tô",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "145",
+        "tenNganh": "(Song ngành) Tàu thủy - Hàng không",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "123",
+        "tenNganh": "Quản lý Công nghiệp",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          },{
+            "monChinh": ["Toán", "Anh"],
+            "monTuChon": ["Văn","Hóa",  "Tin", "Công nghệ"]
+          }
+        ]
+      },{
+        "maNganh": "153",
+        "tenNganh": "Quản trị Kinh doanh (Ngành mới)",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Anh"],
+            "monTuChon": ["Văn","Hóa",  "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "125",
+        "tenNganh": "Tài nguyên và Môi trường ",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh","Anh", "Công nghệ"]
+          }
+        ]
+      },{
+        "maNganh": "141",
+        "tenNganh": "Bảo dưỡng Công nghiệp",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      }
+    ]
+  },{
+    "chuongtrinh" : "CHƯƠNG TRÌNH TIÊN TIẾN (GIẢNG DẠY BẰNG TIẾNG ANH)",
+    "nganh":[
+      {
+        "maNganh": "208",
+        "tenNganh": "Kỹ thuật Điện - Điện tử",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      }
+    ]
+  },{
+    "chuongtrinh" : "CHƯƠNG TRÌNH DẠY VÀ HỌC BẰNG TIẾNG ANH",
+    "nganh":[
+      {
+        "maNganh": "206",
+        "tenNganh": "Khoa học Máy tính",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "207",
+        "tenNganh": "Kỹ thuật Máy tính",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "258",
+        "tenNganh": "Thiết kế Vi mạch (Ngành mới)",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "257",
+        "tenNganh": "Năng lượng Tái tạo (Ngành mới)",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "209",
+        "tenNganh": "Kỹ thuật Cơ khí",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "210",
+        "tenNganh": "Kỹ thuật Cơ Điện Tử",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "211",
+        "tenNganh": "Kỹ thuật Robot",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "214",
+        "tenNganh": "Kỹ thuật Hóa học",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh", "Lý", "Anh", "Tin", "Công nghệ"]
+          },{
+            "monChinh": ["Toán", "Sinh","Anh"],
+            "monTuChon": null
+          }
+        ]
+      },
+      {
+        "maNganh": "218",
+        "tenNganh": "Công nghệ Sinh học",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh", "Lý", "Anh", "Tin", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Hóa","Anh"],
+            "monTuChon": null
+          }
+        ]
+      },{
+        "maNganh": "215",
+        "tenNganh": "Công nghệ Sinh học số (Ngành mới)",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Sinh"],
+            "monTuChon": ["Hóa", "Lý", "Anh", "Tin", "Công nghệ"]
+          },{
+            "monChinh": ["Toán", "Hóa","Anh"],
+            "monTuChon": null
+          }
+        ]
+      },
+      {
+        "maNganh": "219",
+        "tenNganh": "Công nghệ Thực phẩm",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh", "Lý", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "215",
+        "tenNganh": "Quản lý Dự án Xây dựng và Kỹ thuật Xây dựng",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "217",
+        "tenNganh": "Kiến trúc Cảnh quan",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "220",
+        "tenNganh": "Kỹ thuật Dầu khí",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa","Anh", "Công nghệ"]
+          }
+        ]
+      },{
+        "maNganh": "223",
+        "tenNganh": "Quản lý Công nghiệp",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          },{
+            "monChinh": ["Toán", "Anh"],
+            "monTuChon": ["Văn", "Hóa", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "253",
+        "tenNganh": "Kinh doanh số (Ngành mới)",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Anh"],
+            "monTuChon": ["Văn", "Hóa", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "225",
+        "tenNganh": "Tài nguyên và Môi trường",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh","Anh", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "255",
+        "tenNganh": "Kinh tế Tuần hoàn (Ngành mới)",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh","Anh", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "228",
+        "tenNganh": "Logistics và Hệ thống Công nghiệp",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "229",
+        "tenNganh": "Kỹ thuật Vật liệu",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh", "Anh", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "237",
+        "tenNganh": "Kỹ thuật Y sinh",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Sinh", "Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "242",
+        "tenNganh": "Kỹ thuật Ô tô",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "245",
+        "tenNganh": "Kỹ thuật Hàng không",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chuongtrinh" : "CHƯƠNG TRÌNH ĐỊNH HƯỚNG NHẬT BẢN",
+    "nganh":[
+      {
+        "maNganh": "266",
+        "tenNganh": "Khoa học Máy tính",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "268",
+        "tenNganh": "Cơ Kỹ thuật",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chuongtrinh" : "CHƯƠNG TRÌNH CHUYỂN TIẾP QUỐC TẾ (ÚC, MỸ, NEW ZEALAND)",
+    "nganh":[
+      {
+        "maNganh": "306",
+        "tenNganh": "Khoa học Máy tính | Úc, New Zealand, Mỹ",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "307",
+        "tenNganh": "Kỹ thuật Máy tính | Úc, New Zealand",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "308",
+        "tenNganh": "Kỹ thuật Điện - Điện tử | Úc, Hàn Quốc",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "309",
+        "tenNganh": "Kỹ thuật Cơ khí | Mỹ, Úc",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "310",
+        "tenNganh": "Kỹ thuật Cơ Điện tử | Mỹ, Úc",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },{
+        "maNganh": "311",
+        "tenNganh": "Kỹ thuật Hóa học | Úc",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Hóa"],
+            "monTuChon": ["Sinh", "Lý", "Anh", "Tin", "Công nghệ"]
+          },
+          {
+            "monChinh": ["Toán", "Sinh", "Anh"],
+            "monTuChon": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chuongtrinh" : "CHƯƠNG TRÌNH LIÊN KẾT CỬ NHÂN KỸ THUẬT QUỐC TẾ",
+    "nganh":[
+      {
+        "maNganh": "406",
+        "tenNganh": "Trí tuệ Nhân tạo | ĐH Công nghệ Sydney (Úc) cấp bằng",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      },
+      {
+        "maNganh": "416",
+        "tenNganh": "Công nghệ Thông tin | ĐH Công nghệ Sydney (Úc) cấp bằng",
+        "toHopXetTuyen":[
+          {
+            "monChinh": ["Toán", "Lý"],
+            "monTuChon": ["Hóa", "Anh", "Tin", "Công nghệ"]
+          }
+        ]
+      }
+    ]
+  }
+]
