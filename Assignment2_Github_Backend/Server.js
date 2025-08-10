@@ -396,42 +396,92 @@ app.post("/api/tinhDiemDoiTuong_4", (req, res) => {
 app.post("/api/tinhDiemDoiTuong_5", (req, res) => {
 
     let data = req.body;
-    console.log('\n\tDATA truyền đến từ frontend/ResultScreen/TinhDiemDoiTuong()');
+    console.log('\n\tDATA truyền đến từ frontend');
     console.log(data);
+
     try {
-        let diemNangLuc = 999.9999;
-        let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
-        let diemHocLuc = 999.9999;
-        let diemCong = 999.9999;
-        let diemUuTien = 999.9999;
-        let diemXetTuyen = 999.9999;
+        const {
+            diemPhongVan, // Array of interview scores
+            diemBaiLuan, // Essay score
+            chungChiTA, // 'IELTS' or 'TOEFL'
+            diemChungChiTA, // English certificate score
+            loaiChuongTrinhTHPT, // 'vietnam', 'nuocngoai_co_cc', or 'nuocngoai_khong_cc'
+            diemTohopTHPT, // Sum of 3 scores for 'vietnam' program
+            diemChungChiQuocTe, // Score for 'nuocngoai_co_cc' program
+            diemTB3Nam // Average of 3 years of high school scores
+        } = data;
+
+        // --- Validate input ---
+        if (!diemPhongVan || !diemBaiLuan || !chungChiTA || !diemChungChiTA || !loaiChuongTrinhTHPT || !diemTB3Nam) {
+            return res.status(400).json({ success: false, message: "Dữ liệu đầu vào không đủ." });
+        }
+
+        // --- 1. Tính [Điểm năng lực] ---
+
+        // a. Điểm phỏng vấn (trung bình cộng)
+        const diemPhongVanTB = diemPhongVan.reduce((a, b) => a + b, 0) / diemPhongVan.length;
 
 
-        // CODE TÍNH TOÁN
+        // b. Điểm CCTA quy đổi
+        let diemCCTAquyDoi = 0;
+        const diemTA = parseFloat(diemChungChiTA);
+        if (chungChiTA === 'IELTS') {
+            if (diemTA >= 7.5) diemCCTAquyDoi = 100;
+            else if (diemTA >= 7.0) diemCCTAquyDoi = 90;
+            else if (diemTA >= 6.5) diemCCTAquyDoi = 80;
+            else diemCCTAquyDoi = 0; // Includes IELTS 6.0
+        } else if (chungChiTA === 'TOEFL') {
+            if (diemTA >= 110) diemCCTAquyDoi = 100;
+            else if (diemTA >= 101) diemCCTAquyDoi = 90;
+            else if (diemTA >= 93) diemCCTAquyDoi = 80;
+            else if (diemTA >= 79) diemCCTAquyDoi = 0;
+        }
 
+        // c. Tính điểm năng lực
+        const diemNangLuc = (diemPhongVanTB * 0.5) + (parseFloat(diemBaiLuan) * 0.3) + (diemCCTAquyDoi * 0.2);
+
+        // --- 2. Tính [Điểm học THPT quy đổi] ---
+        const diemHocTHPTQuyDoi = parseFloat(diemTB3Nam) * 10;
+
+
+        // --- 3. Tính [Điểm TNTHPT quy đổi] ---
+        let diemTNTHPTQuyDoi = 0;
+        switch (loaiChuongTrinhTHPT) {
+            case 'vietnam':
+                if (!diemTohopTHPT) return res.status(400).json({ success: false, message: "Thiếu điểm tổ hợp THPT." });
+                diemTNTHPTQuyDoi = (parseFloat(diemTohopTHPT) / 3) * 10;
+                break;
+            case 'nuocngoai_co_cc':
+                if (!diemChungChiQuocTe) return res.status(400).json({ success: false, message: "Thiếu điểm chứng chỉ quốc tế." });
+                // Giả sử điểm chứng chỉ quốc tế đã được quy đổi về thang 100
+                diemTNTHPTQuyDoi = parseFloat(diemChungChiQuocTe);
+                break;
+            case 'nuocngoai_khong_cc':
+                diemTNTHPTQuyDoi = diemHocTHPTQuyDoi;
+                break;
+            default:
+                return res.status(400).json({ success: false, message: "Loại chương trình THPT không hợp lệ." });
+        }
+
+        // --- 4. Tính Điểm học lực (kết quả cuối cùng) ---
+        const diemHocLuc = (diemNangLuc * 0.7) + (diemTNTHPTQuyDoi * 0.2) + (diemHocTHPTQuyDoi * 0.1);
 
         res.status(200).json({
             success: true,
             results: {
-                //KẾT QUẢ TRẢ VỀ
-                diemNangLuc: diemNangLuc.toFixed(3),
-                diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
-                diemHocLuc: diemHocLuc.toFixed(3),
-                diemCong: diemCong.toFixed(3),
-                diemUuTien: diemUuTien.toFixed(3),
-                diemXetTuyen: diemXetTuyen.toFixed(3),
+                diemHocLuc: diemHocLuc.toFixed(2),
+                diemNangLuc: diemNangLuc.toFixed(2),
+                diemTNTHPTQuyDoi: diemTNTHPTQuyDoi.toFixed(2),
+                diemHocTHPTQuyDoi: diemHocTHPTQuyDoi.toFixed(2),
             }
         });
 
     } catch (error) {
-        console.error("Error in calculation:", error);
+        console.error("Error in calculation for DoiTuong_5:", error);
         res.status(500).json({
             success: false,
-            message: "Internal server error during calculation"
+            message: "Lỗi hệ thống trong quá trình tính toán."
         });
-        res.status(400).send("Dữ liệu không hợp lệ");
     }
 });
 
