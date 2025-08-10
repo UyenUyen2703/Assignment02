@@ -33,24 +33,27 @@ db.connect((err) => {
 // --- Hàm / API tính toán thông dụng ---
 const toHopMonData = require('./ToHopMon.json');
 const doiTuongUuTienData = require('./DoiTuongUuTien.json');
-console.log(toHopMonData);
+// console.log('-------',toHopMonData);
 
-function TinhDiemCong(data) {
-    const temp = data.diemHocLuc + data.diemCongThanhTich;
-    if (temp < 100) {
-        return data.diemCongThanhTich;
+function tinhDiemCong(diemHocLuc, diemCongThanhTich) {
+    if ((diemHocLuc + diemCongThanhTich) < 100) {
+        return diemCongThanhTich;
     } else {
-        return 100 - data.diemHocLuc;
+        return 100 - diemHocLuc;
     }
 }
-function TinhDiemUuTien(data, diemUuTien) {
-    const temp = data.diemHocLuc + data.diemCong;
-    if (temp < 75) {
-        return diemUuTien;
+
+function tinhDiemUuTien(diemHocLuc, diemCong, diemUuTien_KhuVuc, diemUuTien_DoiTuong) {
+    // Quy đổi điểm ưu tiên
+    const diemUuTienQuyDoi = ((diemUuTien_KhuVuc || 0) + (diemUuTien_DoiTuong || 0)) / 3 * 10;
+
+    if ((diemHocLuc + diemCong) < 75) {
+        return diemUuTienQuyDoi;
     } else {
-        return (100 - data.diemHocLuc - data.diemCong) / 25 * diemUuTien;
+        return ((100 - diemHocLuc - diemCong) / 25) * diemUuTienQuyDoi;
     }
 }
+
 function XetDiemUuTien(data) {
 
     // CODE --
@@ -191,7 +194,7 @@ app.post('/api/quyDoiDiemChungChiQuocTe', async (req, res) => {
 
 app.post('/api/quyDoiDiemChungChiQuocTe_UTS', async (req, res) => {
     const data = req.body;
-    console.log(data)
+    // console.log(data)
     try {
 
         //CODE --
@@ -221,7 +224,7 @@ app.post("/api/tinhDiemDoiTuong_1", (req, res) => {
     try {
         let diemNangLuc = 999.9999;
         let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
+        let diemTHPT = 999.9999;
         let diemHocLuc = 999.9999;
         let diemCong = 999.9999;
         let diemUuTien = 999.9999;
@@ -237,7 +240,7 @@ app.post("/api/tinhDiemDoiTuong_1", (req, res) => {
                 //KẾT QUẢ TRẢ VỀ
                 diemNangLuc: diemNangLuc.toFixed(3),
                 diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
+                diemTHPT: diemTHPT.toFixed(3),
                 diemHocLuc: diemHocLuc.toFixed(3),
                 diemCong: diemCong.toFixed(3),
                 diemUuTien: diemUuTien.toFixed(3),
@@ -266,7 +269,7 @@ app.post("/api/tinhDiemDoiTuong_2", (req, res) => {
     try {
         let diemNangLuc = 999.9999;
         let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
+        let diemTHPT = 999.9999;
         let diemHocLuc = 999.9999;
         let diemCong = 999.9999;
         let diemUuTien = 999.9999;
@@ -282,7 +285,7 @@ app.post("/api/tinhDiemDoiTuong_2", (req, res) => {
                 //KẾT QUẢ TRẢ VỀ
                 diemNangLuc: diemNangLuc.toFixed(3),
                 diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
+                diemTHPT: diemTHPT.toFixed(3),
                 diemHocLuc: diemHocLuc.toFixed(3),
                 diemCong: diemCong.toFixed(3),
                 diemUuTien: diemUuTien.toFixed(3),
@@ -311,7 +314,7 @@ app.post("/api/tinhDiemDoiTuong_3", (req, res) => {
     try {
         let diemNangLuc = 999.9999;
         let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
+        let diemTHPT = 999.9999;
         let diemHocLuc = 999.9999;
         let diemCong = 999.9999;
         let diemUuTien = 999.9999;
@@ -327,7 +330,7 @@ app.post("/api/tinhDiemDoiTuong_3", (req, res) => {
                 //KẾT QUẢ TRẢ VỀ
                 diemNangLuc: diemNangLuc.toFixed(3),
                 diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
+                diemTHPT: diemTHPT.toFixed(3),
                 diemHocLuc: diemHocLuc.toFixed(3),
                 diemCong: diemCong.toFixed(3),
                 diemUuTien: diemUuTien.toFixed(3),
@@ -356,7 +359,7 @@ app.post("/api/tinhDiemDoiTuong_4", (req, res) => {
     try {
         let diemNangLuc = 999.9999;
         let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
+        let diemTHPT = 999.9999;
         let diemHocLuc = 999.9999;
         let diemCong = 999.9999;
         let diemUuTien = 999.9999;
@@ -372,7 +375,7 @@ app.post("/api/tinhDiemDoiTuong_4", (req, res) => {
                 //KẾT QUẢ TRẢ VỀ
                 diemNangLuc: diemNangLuc.toFixed(3),
                 diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
+                diemTHPT: diemTHPT.toFixed(3),
                 diemHocLuc: diemHocLuc.toFixed(3),
                 diemCong: diemCong.toFixed(3),
                 diemUuTien: diemUuTien.toFixed(3),
@@ -401,7 +404,7 @@ app.post("/api/tinhDiemDoiTuong_5", (req, res) => {
     try {
         let diemNangLuc = 999.9999;
         let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
+        let diemTHPT = 999.9999;
         let diemHocLuc = 999.9999;
         let diemCong = 999.9999;
         let diemUuTien = 999.9999;
@@ -417,7 +420,7 @@ app.post("/api/tinhDiemDoiTuong_5", (req, res) => {
                 //KẾT QUẢ TRẢ VỀ
                 diemNangLuc: diemNangLuc.toFixed(3),
                 diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
+                diemTHPT: diemTHPT.toFixed(3),
                 diemHocLuc: diemHocLuc.toFixed(3),
                 diemCong: diemCong.toFixed(3),
                 diemUuTien: diemUuTien.toFixed(3),
@@ -440,88 +443,145 @@ app.post("/api/tinhDiemDoiTuong_5", (req, res) => {
 
 app.post('/api/tinhDiemDoiTuong_6', (req, res) => {
     try {
-        const data = req.body;
+        let data = req.body;
+        console.log('\n\tDATA truyền đến từ frontend/ResultScreen/TinhDiemDoiTuong()--------');
+        console.log(data);
 
-        // Ví dụ data có:
-        // data.diemThiTN, data.diemHocBa, data.DATA_DiemHocLuc, data.diemCong, data.diemUuTien, data.diemTotNghiep,...
+        const monChinh = data.nganhInfo.monChinh || [];
+        const monTuChon = data.nganhInfo.monTuChon || [];
 
-        if (!data.diemThiTN || !data.diemHocBa || !data.DATA_DiemHocLuc) {
-            return res.status(400).json({ message: "Thiếu dữ liệu bắt buộc" });
-        }
+        // ===== TÍNH ĐIỂM TNTHPT =====
+        let diemThiMonChinh1 = parseFloat(data[`diemThi_${monChinh[0]}`]) || 0;
+        let diemThiMonChinh2 = parseFloat(data[`diemThi_${monChinh[1]}`]) || 0;
 
-        const { DATA_DiemHocLuc, diemCong = 0, diemUuTien = 0, diemTotNghiep = [] } = data;
-        const diemThiTN = data.diemThiTN;
-        const diemHocBa = data.diemHocBa;
 
-        // Lấy môn bắt buộc và tự chọn từ DATA_DiemHocLuc
-        const monBatBuoc = DATA_DiemHocLuc.batBuoc || [];
-        const monTuChon = DATA_DiemHocLuc.tuChon || [];
-
-        // Kiểm tra đủ môn
-        if (monBatBuoc.length < 2) {
-            return res.status(400).json({ message: "Cần ít nhất 2 môn bắt buộc" });
-        }
-        if (monTuChon.length < 1) {
-            return res.status(400).json({ message: "Cần ít nhất 1 môn tự chọn" });
-        }
-
-        // Tính điểm TN THPT
-        const diemTN_thi_arr = monTuChon.map(mon => {
-            const combo = [...monBatBuoc, mon];
-            const tb = combo.reduce((sum, m) => sum + parseFloat(m.diem || 0), 0) / combo.length;
-            return tb;
+        // Chọn môn tự chọn có điểm thi cao nhất (chỉ lấy môn có nhập điểm)
+        let diemThiMonTuChon = 0;
+        const avNames = ["anh", "av", "english", "anh văn", "tiếng anh"];
+        monTuChon.forEach(monTC => {
+            let diemTC;
+            if (avNames.includes(monTC.toLowerCase())) {
+                diemTC = 10; // Quy đổi Anh văn thành 10
+            } else {
+                if (data[`diemThi_${monTC}_TC`] === null || data[`diemThi_${monTC}_TC`] === undefined) {
+                    return; // bỏ qua nếu không nhập
+                }
+                diemTC = parseFloat(data[`diemThi_${monTC}_TC`]) || 0;
+            }
+            if (diemTC > diemThiMonTuChon) diemThiMonTuChon = diemTC;
         });
 
-        const diemTN_max = diemTN_thi_arr.length > 0 ? Math.max(...diemTN_thi_arr) : 0;
+        // ===== TÍNH ĐIỂM TNTHPT =====
+        let diemTNTHPT = ((diemThiMonChinh1 + diemThiMonChinh2 + diemThiMonTuChon) / 3) * 10;
 
-        // Tính điểm học bạ
-        const toHopHocBa = diemHocBa.toHop || [];
-        const monDaNhap = toHopHocBa.filter(m => !isNaN(parseFloat(m.diem)));
+        // Tính trung bình 3 năm cho môn
+        const avg3Years = (mon) => {
+            let tong = 0;
+            let count = 0;
+            for (let nam = 10; nam <= 12; nam++) {
+                let diem = parseFloat(data[`diemTB_${mon}_${nam}`]);
+                if (data[`diemTB_${mon}_${nam}`] != null && !isNaN(diem)) {
+                    tong += diem;
+                    count++;
+                }
+            }
+            return count > 0 ? (tong / count) : 0;
+        };
 
-        if (monDaNhap.length < 3) {
-            return res.status(400).json({ message: "Cần ít nhất 3 môn (2 bắt buộc + 1 tự chọn)" });
+        let avgMonChinh1 = avg3Years(monChinh[0]);
+        let avgMonChinh2 = avg3Years(monChinh[1]);
+
+        // Lấy điểm lớp 12 từng môn để kiểm tra
+        const diemLop12MonChinh1 = parseFloat(data[`diemTB_${monChinh[0]}_12`]) || 0;
+        const diemLop12MonChinh2 = parseFloat(data[`diemTB_${monChinh[1]}_12`]) || 0;
+
+        // Tương tự môn tự chọn lấy điểm lớp 12 cao nhất
+        let diemLop12MonTuChon = 0;
+        monTuChon.forEach(monTC => {
+            let diem = parseFloat(data[`diemTB_${monTC}_12`]) || 0;
+            if (diem > diemLop12MonTuChon) diemLop12MonTuChon = diem;
+        });
+
+        let diemTBLop12TrungBinh = (diemLop12MonChinh1 + diemLop12MonChinh2 + diemLop12MonTuChon) / 3;
+
+        // Kiểm tra điều kiện điểm TB lớp 12 >= 8.0
+        if (diemTBLop12TrungBinh < 8.0) {
+            return res.status(400).json({
+                success: false,
+                message: "Điểm trung bình lớp 12 của bạn không đủ điều kiện xét tuyển."
+            });
         }
 
-        let diemTHPT_thi = [];
-        for (let i = 0; i < monDaNhap.length; i++) {
-            for (let j = i + 1; j < monDaNhap.length; j++) {
-                for (let k = j + 1; k < monDaNhap.length; k++) {
-                    const combo = [monDaNhap[i], monDaNhap[j], monDaNhap[k]];
-                    const batBuocCount = combo.filter(m => m.batBuoc).length;
-                    const tuChonCount = combo.filter(m => !m.batBuoc).length;
-
-                    if (batBuocCount >= 2 && tuChonCount >= 1) {
-                        const tb = combo.reduce((sum, m) => sum + parseFloat(m.diem), 0) / combo.length;
-                        diemTHPT_thi.push(tb);
-                    }
+        let diemTHPT = 0;
+        monTuChon.forEach(monTC => {
+            let avgTC;
+            if (avNames.includes(monTC.toLowerCase())) {
+                avgTC = 10; // Quy đổi Anh văn thành 10
+            } else {
+                if (data[`diemTB_${monTC}_10`] === null || data[`diemTB_${monTC}_10`] === undefined) {
+                    return; // bỏ qua nếu không nhập
                 }
+                avgTC = avg3Years(monTC);
+            }
+
+            let tong3Mon = avgMonChinh1 + avgMonChinh2 + avgTC;
+            let diemTBToHop = tong3Mon / 3 * 10;
+
+            if (diemTBToHop > diemTHPT) {
+                diemTHPT = diemTBToHop;
+            }
+        });
+        // ===== HÀM TÍNH ĐIỂM CỘNG =====
+        function tinhDiemCong(diemHocLuc, diemCongThanhTich) {
+            if ((diemHocLuc + diemCongThanhTich) < 100) {
+                return diemCongThanhTich;
+            } else {
+                return 100 - diemHocLuc;
             }
         }
 
-        const diemTHPT_max = diemTHPT_thi.length > 0 ? Math.max(...diemTHPT_thi) : 0;
-
-        // Tính điểm TN (điểm tốt nghiệp)
-        let diemTN = 0;
-        const monTN_DaNhap = diemTotNghiep.filter(m => m.diem !== null && m.diem !== "" && !isNaN(parseFloat(m.diem)));
-
-        if (monTN_DaNhap.length > 0) {
-            diemTN = monTN_DaNhap.reduce((sum, m) => sum + parseFloat(m.diem), 0) / monTN_DaNhap.length;
+        // ===== HÀM TÍNH ĐIỂM ƯU TIÊN =====
+        function tinhDiemUuTien(diemHocLuc, diemCong, diemUuTien_KV, diemUuTien_DT) {
+            const diemUuTienQuyDoi = ((diemUuTien_KV || 0) + (diemUuTien_DT || 0)) / 3 * 10;
+            if ((diemHocLuc + diemCong) < 75) {
+                return diemUuTienQuyDoi;
+            } else {
+                return ((100 - diemHocLuc - diemCong) / 25) * diemUuTienQuyDoi;
+            }
         }
+        let diemHocLuc = diemTHPT * 0.2 + diemTNTHPT * 0.8;
 
-        res.json({
+        // ===== TÍNH CỘNG & ƯU TIÊN =====
+        let diemCongThanhTich = parseFloat(data.diemCongThanhTich) || 0;
+        let diemCong = tinhDiemCong(diemHocLuc, diemCongThanhTich);
+
+        let diemUuTien = tinhDiemUuTien(
+            diemHocLuc,
+            diemCong,
+            parseFloat(data.diemUuTien_KhuVuc) || 0,
+            parseFloat(data.diemUuTien_DoiTuong) || 0
+        );
+        // ===== CÁC ĐIỂM KHÁC =====
+        let diemXetTuyen = diemHocLuc + diemUuTien + diemCong;
+
+        res.status(200).json({
             success: true,
-            diemTNTHPT: diemTN_max.toFixed(3),
-            diemTHPT: diemTHPT_max.toFixed(3),
-            diemXetTuyen: (diemTHPT_max + diemTN_max).toFixed(3),
-            diemCong: diemCong.toFixed(3),
-            diemUuTien: diemUuTien.toFixed(3),
-            diemThiTN: diemTN.toFixed(3),
+            results: {
+                diemTNTHPT: diemTNTHPT.toFixed(2),
+                diemTHPT: diemTHPT.toFixed(2),
+                diemHocLuc: diemHocLuc.toFixed(2),
+                diemCong: diemCong.toFixed(2),
+                diemUuTien: diemUuTien.toFixed(2),
+                diemXetTuyen: diemXetTuyen.toFixed(2),
+            }
         });
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Lỗi xử lý", error: err.message });
     }
 });
+
 
 
 //------------------------------------------------------------------------------//
@@ -535,7 +595,7 @@ app.post("/api/tinhDiemDoiTuong_7", (req, res) => {
     try {
         let diemNangLuc = 999.9999;
         let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
+        let diemTHPT = 999.9999;
         let diemHocLuc = 999.9999;
         let diemCong = 999.9999;
         let diemUuTien = 999.9999;
@@ -551,7 +611,7 @@ app.post("/api/tinhDiemDoiTuong_7", (req, res) => {
                 //KẾT QUẢ TRẢ VỀ
                 diemNangLuc: diemNangLuc.toFixed(3),
                 diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
+                diemTHPT: diemTHPT.toFixed(3),
                 diemHocLuc: diemHocLuc.toFixed(3),
                 diemCong: diemCong.toFixed(3),
                 diemUuTien: diemUuTien.toFixed(3),
@@ -580,7 +640,7 @@ app.post("/api/tinhDiemDoiTuong_8", (req, res) => {
     try {
         let diemNangLuc = 999.9999;
         let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
+        let diemTHPT = 999.9999;
         let diemHocLuc = 999.9999;
         let diemCong = 999.9999;
         let diemUuTien = 999.9999;
@@ -596,7 +656,7 @@ app.post("/api/tinhDiemDoiTuong_8", (req, res) => {
                 //KẾT QUẢ TRẢ VỀ
                 diemNangLuc: diemNangLuc.toFixed(3),
                 diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
+                diemTHPT: diemTHPT.toFixed(3),
                 diemHocLuc: diemHocLuc.toFixed(3),
                 diemCong: diemCong.toFixed(3),
                 diemUuTien: diemUuTien.toFixed(3),

@@ -16,15 +16,42 @@ const DoiTuong6Screen = ({ DATA_DiemHocLuc, setDATA_DiemHocLuc }) => {
     const toHopXetTuyenList = selectedNganh.toHopXetTuyen ? selectedNganh.toHopXetTuyen : [];
     const selectToHop = toHopXetTuyenList?.[toHopXetTuyen] || { monChinh: [], monTuChon: [] };
 
+    // Truyền luôn tổ hợp môn vào DATA_DiemHocLuc mỗi khi tổ hợp thay đổi
+    useEffect(() => {
+        setDATA_DiemHocLuc(prev => ({
+            ...prev,
+            monChinh: selectToHop.monChinh || [],
+            monTuChon: selectToHop.monTuChon || [],
+        }));
+    }, [chuongTrinhHoc, nganh, toHopXetTuyen]);
+
     const handleUpdateDATA = (index, value) => {
         let parsed = parseFloat(value);
-        setDATA_DiemHocLuc(prev => ({ ...prev, [index]: isNaN(parsed) ? null : parsed }));
+        setDATA_DiemHocLuc(prev => ({
+            ...prev,
+            [index]: isNaN(parsed) ? null : parsed,
+            monChinh: selectToHop.monChinh || [],
+            monTuChon: selectToHop.monTuChon || [],
+        }));
     };
+    useEffect(() => {
+        setDATA_DiemHocLuc(prev => ({
+            ...prev,
+            doiTuong: 6
+        }));
+    }, []);
 
     useEffect(() => {
-        setDATA_DiemHocLuc({});
-        handleUpdateDATA('doiTuong', 6);
-    }, []);
+        setDATA_DiemHocLuc(prev => ({
+            ...prev,
+            nganhInfo: {
+                maNganh: selectedNganh.maNganh || '',
+                tenNganh: selectedNganh.tenNganh || '',
+                monChinh: selectToHop.monChinh || [],
+                monTuChon: selectToHop.monTuChon || [],
+            }
+        }));
+    }, [chuongTrinhHoc, nganh, toHopXetTuyen]);
 
     const monBatBuoc = selectToHop.monChinh || [];
     const monTuChon = selectToHop.monTuChon || [];
@@ -110,7 +137,7 @@ const DoiTuong6Screen = ({ DATA_DiemHocLuc, setDATA_DiemHocLuc }) => {
                                     style={[styles.inputFieldInput, { flex: 1 }]}
                                     placeholder="Nhập điểm"
                                     keyboardType="numeric"
-                                    onChangeText={(text) => handleUpdateDATA(`diemThi_${mon}`, text)}
+                                    onChangeText={(text) => handleUpdateDATA(`diemThi_${mon}_TC`, parseFloat(text))}
                                 />
                             </View>
                         ))}

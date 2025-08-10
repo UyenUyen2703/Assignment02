@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import axios from "axios";
+// import { Alert } from 'react-native';
 
 const ResultScreen = ({ params, route }) => {
 
@@ -13,12 +14,15 @@ const ResultScreen = ({ params, route }) => {
     //-----------------------------------------------//
 
     const DATA_DiemHocLuc = route.params?.DATA_DiemHocLuc;
+    console.log("diemhocluc", DATA_DiemHocLuc);
     const DATA_DiemCong = route.params?.DATA_DiemCong;
+    console.log("diemcong", DATA_DiemCong);
     const Data_DoiTuong = Object.assign({}, DATA_DiemHocLuc, DATA_DiemCong);
+    console.log("DoiTuong:", Data_DoiTuong);
 
     const [diemNangLuc, setDiemNangLuc] = useState(null);
     const [diemTNTHPT, setDiemTNTHPT] = useState(null);
-    const [diemTBTHPT, setDiemTBTHPT] = useState(null);
+    const [diemTHPT, setDiemTHPT] = useState(null);
     const [diemHocLuc, setDiemHocLuc] = useState(null);
     const [diemUuTien, setDiemUuTien] = useState(null);
     const [diemCong, setDiemCong] = useState(null);
@@ -32,16 +36,53 @@ const ResultScreen = ({ params, route }) => {
 
     useEffect(() => {
         console.log("\n\tResultScreen: DATA_DiemHocLuc: các trường dữ liệu lấy từ MainScreen/DoiTuongScreen");
-        console.log(DATA_DiemHocLuc)
+        console.log('hocluc', DATA_DiemHocLuc)
 
         console.log("\n\tResultScreen: DATA_DiemCong: các trường dữ liệu lấy từ ExtraScoreScreen");
-        console.log(DATA_DiemCong)
+        console.log('diemcong', DATA_DiemCong)
 
         console.log("\n\tResultScreen: DATA_DoiTuong: tập hợp dữ liệu từ DATA_DiemHocLuc & tDATA_DiemCong");
-        console.log(Data_DoiTuong)
+        console.log('DoiTuong', Data_DoiTuong)
 
-        GoiAPITinhDiemXetTuyen()
-    }, []);
+        // Nếu là đối tượng 6, kiểm tra điểm TB lớp 12 trước khi gọi API
+        if (DATA_DiemHocLuc?.doiTuong === 6) {
+            if (!DATA_DiemHocLuc?.monChinh || !DATA_DiemHocLuc?.monTuChon || DATA_DiemHocLuc.monChinh.length === 0 || DATA_DiemHocLuc.monTuChon.length === 0) {
+                Alert.alert('Thiếu thông tin tổ hợp môn!', 'Vui lòng kiểm tra lại màn hình nhập tổ hợp môn.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('DoiTuong6Screen')
+                    }
+                ]);
+                console.warn('Thiếu tổ hợp môn khi vào ResultScreen:', DATA_DiemHocLuc);
+                return;
+            }
+            // Kiểm tra điểm TB lớp 12
+            const monChinh = DATA_DiemHocLuc.monChinh;
+            const monTuChon = DATA_DiemHocLuc.monTuChon;
+            if (monChinh.length >= 2 && monTuChon.length > 0) {
+                const diemLop12MonChinh1 = parseFloat(DATA_DiemHocLuc[`diemTB_${monChinh[0]}_12`]) || 0;
+                const diemLop12MonChinh2 = parseFloat(DATA_DiemHocLuc[`diemTB_${monChinh[1]}_12`]) || 0;
+                let diemLop12MonTuChon = 0;
+                monTuChon.forEach(monTC => {
+                    const diem = parseFloat(DATA_DiemHocLuc[`diemTB_${monTC}_12`]) || 0;
+                    if (diem > diemLop12MonTuChon) diemLop12MonTuChon = diem;
+                });
+                const diemTBLop12TrungBinh = (diemLop12MonChinh1 + diemLop12MonChinh2 + diemLop12MonTuChon) / 3;
+                if (diemTBLop12TrungBinh > 0 && diemTBLop12TrungBinh < 8.0) {
+                    Alert.alert('Thông báo', 'Điểm trung bình lớp 12 của bạn không đủ điều kiện xét tuyển.', [
+                        {
+                            text: 'OK',
+                            onPress: () => navigation.navigate('MainScreen')
+                        }
+                    ]);
+                    return;
+                }
+            }
+            TinhDiemDoiTuong6();
+        } else {
+            GoiAPITinhDiemXetTuyen();
+        }
+    });
 
     //-----------------------------------------------//
     const TinhDiemDoiTuong1 = async () => {
@@ -54,7 +95,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setdiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -80,7 +121,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setdiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -107,7 +148,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setdiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -133,7 +174,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setdiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -159,7 +200,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setdiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -174,32 +215,33 @@ const ResultScreen = ({ params, route }) => {
     }
 
     //-----------------------------------------------//
-
     const TinhDiemDoiTuong6 = async () => {
         try {
             const response = await axios.post(`${apiAddress}/tinhDiemDoiTuong_6`, Data_DoiTuong);
 
             if (response.data.success) {
                 console.log('\n\tResultScreen: Kết quả trả về từ API');
-                console.log(response.data.results);
+                console.log('--------', response.data.results);
 
-                // setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
                 console.log('\n\tResultScreen: DiemTNTHPT:', response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setDiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
                 setDiemXetTuyen(response.data.results['diemXetTuyen']);
             } else {
-                alert("Không nhận được điểm học lực");
+                Alert.alert("Không nhận được điểm học lực");
             }
         } catch (error) {
             console.error("Lỗi khi gửi dữ liệu: ", error);
-            alert("Lỗi khi gửi dữ liệu 2");
+            if (error.response && error.response.status === 400 && error.response.data && error.response.data.message) {
+                Alert.alert('Thông báo', error.response.data.message);
+            } else {
+                Alert.alert("Lỗi khi gửi dữ liệu", error.message);
+            }
         }
     }
-
     //-----------------------------------------------//
 
     const TinhDiemDoiTuong7 = async () => {
@@ -212,7 +254,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setdiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -239,7 +281,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setDiemTBTHPT(response.data.results['diemTBTHPT']);
+                setdiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -332,17 +374,17 @@ const ResultScreen = ({ params, route }) => {
                     </View>
 
                     <View style={{ width: '100%', paddingLeft: 20, marginVertical: 10 }}>
-                        <View style={styles.resultFieldRow}>
+                        {/* <View style={styles.resultFieldRow}>
                             <Text style={styles.resultFieldText}>Điểm Năng Lực:</Text>
                             <Text style={styles.resultFieldText}>{diemNangLuc}</Text>
-                        </View>
+                        </View> */}
                         <View style={styles.resultFieldRow}>
                             <Text style={styles.resultFieldText}>Điểm Tốt Nghiệp THPT:</Text>
                             <Text style={styles.resultFieldText}>{diemTNTHPT}</Text>
                         </View>
                         <View style={styles.resultFieldRow}>
                             <Text style={styles.resultFieldText}>Điểm Học THPT:</Text>
-                            <Text style={styles.resultFieldText}>{diemTBTHPT}</Text>
+                            <Text style={styles.resultFieldText}>{diemTHPT}</Text>
                         </View>
                     </View>
 

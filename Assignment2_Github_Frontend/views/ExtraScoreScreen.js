@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Modal, Pressable, Keyboard, Platform, ScrollView } from 'react-native';
-import { Picker } from "@react-native-picker/picker"
+import { Picker } from "@react-native-picker/picker";
+import { useEffect, useState } from 'react';
+import { Image, Keyboard, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -310,10 +310,16 @@ const ExtraScoreScreen = ({ params, route }) => {
             <View style={[localsStyles.footer]}>
                 <TouchableOpacity style={localsStyles.submitButton}>
                     <Text style={localsStyles.submitButtonText}
-                        onPress={
-                            () => navigation.navigate('ResultScreen',
-                                { DATA_DiemHocLuc, DATA_DiemCong })
-                        }
+                        onPress={() => {
+                            // Kiểm tra tổ hợp môn trước khi chuyển màn hình
+                            if (DATA_DiemHocLuc?.doiTuong === 6) {
+                                if (!DATA_DiemHocLuc?.monChinh || !DATA_DiemHocLuc?.monTuChon || DATA_DiemHocLuc.monChinh.length === 0 || DATA_DiemHocLuc.monTuChon.length === 0) {
+                                    alert('Thiếu thông tin tổ hợp môn! Vui lòng kiểm tra lại màn hình nhập tổ hợp môn.');
+                                    return;
+                                }
+                            }
+                            navigation.navigate('ResultScreen', { DATA_DiemHocLuc, DATA_DiemCong });
+                        }}
                     >Tính Điểm Xét Tuyển</Text>
                 </TouchableOpacity>
             </View>
