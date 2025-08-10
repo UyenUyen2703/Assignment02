@@ -1,8 +1,7 @@
-import React, { use, useEffect, useState, } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, Keyboard, Platform } from 'react-native';
-import { Picker } from "@react-native-picker/picker"
+import { Picker } from "@react-native-picker/picker";
+import { useEffect, useState } from 'react';
+import { Image, Keyboard, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import DoiTuong1Screen from './DoiTuongScreen/DoiTuong1Screen';
 import DoiTuong2Screen from './DoiTuongScreen/DoiTuong2Screen';

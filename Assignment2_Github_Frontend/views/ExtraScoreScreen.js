@@ -1,6 +1,6 @@
-import { Picker } from "@react-native-picker/picker";
-import { useEffect, useState } from 'react';
-import { Image, Keyboard, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Modal, Pressable, Keyboard, Platform, ScrollView } from 'react-native';
+import { Picker } from "@react-native-picker/picker"
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,7 +10,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const ExtraScoreScreen = ({ params, route }) => {
 
     const DATA_DiemHocLuc = route.params?.DATA_DiemHocLuc;
-    const apiAddress = 'http://192.168.1.187:5555/api';
+    const apiAddress = 'http://192.168.1.190:5555/api';
     let coMonAnh = DATA_DiemHocLuc.danhSachMon?.includes("Anh");
     const [keyboardOffset, setKeyboardOffset] = useState(0);
 

@@ -438,47 +438,91 @@ app.post("/api/tinhDiemDoiTuong_5", (req, res) => {
 //------------------------------------------------------------------------------//
 //  ĐÓI TƯỢNG 6
 
-app.post("/api/tinhDiemDoiTuong_6", (req, res) => {
-
-    let data = req.body;
-    console.log('\n\tDATA truyền đến từ frontend/ResultScreen/TinhDiemDoiTuong()');
-    console.log(data);
+app.post('/api/tinhDiemDoiTuong_6', (req, res) => {
     try {
-        let diemNangLuc = 999.9999;
-        let diemTNTHPT = 999.9999;
-        let diemTBTHPT = 999.9999;
-        let diemHocLuc = 999.9999;
-        let diemCong = 999.9999;
-        let diemUuTien = 999.9999;
-        let diemXetTuyen = 999.9999;
+        const data = req.body;
 
+        // Ví dụ data có:
+        // data.diemThiTN, data.diemHocBa, data.DATA_DiemHocLuc, data.diemCong, data.diemUuTien, data.diemTotNghiep,...
 
-        // CODE TÍNH TOÁN
+        if (!data.diemThiTN || !data.diemHocBa || !data.DATA_DiemHocLuc) {
+            return res.status(400).json({ message: "Thiếu dữ liệu bắt buộc" });
+        }
 
+        const { DATA_DiemHocLuc, diemCong = 0, diemUuTien = 0, diemTotNghiep = [] } = data;
+        const diemThiTN = data.diemThiTN;
+        const diemHocBa = data.diemHocBa;
 
-        res.status(200).json({
-            success: true,
-            results: {
-                //KẾT QUẢ TRẢ VỀ
-                diemNangLuc: diemNangLuc.toFixed(3),
-                diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTBTHPT: diemTBTHPT.toFixed(3),
-                diemHocLuc: diemHocLuc.toFixed(3),
-                diemCong: diemCong.toFixed(3),
-                diemUuTien: diemUuTien.toFixed(3),
-                diemXetTuyen: diemXetTuyen.toFixed(3),
+        // Lấy môn bắt buộc và tự chọn từ DATA_DiemHocLuc
+        const monBatBuoc = DATA_DiemHocLuc.batBuoc || [];
+        const monTuChon = DATA_DiemHocLuc.tuChon || [];
+
+        // Kiểm tra đủ môn
+        if (monBatBuoc.length < 2) {
+            return res.status(400).json({ message: "Cần ít nhất 2 môn bắt buộc" });
+        }
+        if (monTuChon.length < 1) {
+            return res.status(400).json({ message: "Cần ít nhất 1 môn tự chọn" });
+        }
+
+        // Tính điểm TN THPT
+        const diemTN_thi_arr = monTuChon.map(mon => {
+            const combo = [...monBatBuoc, mon];
+            const tb = combo.reduce((sum, m) => sum + parseFloat(m.diem || 0), 0) / combo.length;
+            return tb;
+        });
+
+        const diemTN_max = diemTN_thi_arr.length > 0 ? Math.max(...diemTN_thi_arr) : 0;
+
+        // Tính điểm học bạ
+        const toHopHocBa = diemHocBa.toHop || [];
+        const monDaNhap = toHopHocBa.filter(m => !isNaN(parseFloat(m.diem)));
+
+        if (monDaNhap.length < 3) {
+            return res.status(400).json({ message: "Cần ít nhất 3 môn (2 bắt buộc + 1 tự chọn)" });
+        }
+
+        let diemTHPT_thi = [];
+        for (let i = 0; i < monDaNhap.length; i++) {
+            for (let j = i + 1; j < monDaNhap.length; j++) {
+                for (let k = j + 1; k < monDaNhap.length; k++) {
+                    const combo = [monDaNhap[i], monDaNhap[j], monDaNhap[k]];
+                    const batBuocCount = combo.filter(m => m.batBuoc).length;
+                    const tuChonCount = combo.filter(m => !m.batBuoc).length;
+
+                    if (batBuocCount >= 2 && tuChonCount >= 1) {
+                        const tb = combo.reduce((sum, m) => sum + parseFloat(m.diem), 0) / combo.length;
+                        diemTHPT_thi.push(tb);
+                    }
+                }
             }
-        });
+        }
 
-    } catch (error) {
-        console.error("Error in calculation:", error);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error during calculation"
+        const diemTHPT_max = diemTHPT_thi.length > 0 ? Math.max(...diemTHPT_thi) : 0;
+
+        // Tính điểm TN (điểm tốt nghiệp)
+        let diemTN = 0;
+        const monTN_DaNhap = diemTotNghiep.filter(m => m.diem !== null && m.diem !== "" && !isNaN(parseFloat(m.diem)));
+
+        if (monTN_DaNhap.length > 0) {
+            diemTN = monTN_DaNhap.reduce((sum, m) => sum + parseFloat(m.diem), 0) / monTN_DaNhap.length;
+        }
+
+        res.json({
+            success: true,
+            diemTNTHPT: diemTN_max.toFixed(3),
+            diemTHPT: diemTHPT_max.toFixed(3),
+            diemXetTuyen: (diemTHPT_max + diemTN_max).toFixed(3),
+            diemCong: diemCong.toFixed(3),
+            diemUuTien: diemUuTien.toFixed(3),
+            diemThiTN: diemTN.toFixed(3),
         });
-        res.status(400).send("Dữ liệu không hợp lệ");
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Lỗi xử lý", error: err.message });
     }
 });
+
 
 //------------------------------------------------------------------------------//
 //  ĐÓI TƯỢNG 7

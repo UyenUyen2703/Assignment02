@@ -9,7 +9,7 @@ import axios from "axios";
 const ResultScreen = ({ params, route }) => {
 
     //ĐỊA CHỈ IP ------------------------------------//
-    const apiAddress = 'http://192.168.1.187:5555/api';
+    const apiAddress = 'http://192.168.1.190:5555/api';
     //-----------------------------------------------//
 
     const DATA_DiemHocLuc = route.params?.DATA_DiemHocLuc;
@@ -183,8 +183,9 @@ const ResultScreen = ({ params, route }) => {
                 console.log('\n\tResultScreen: Kết quả trả về từ API');
                 console.log(response.data.results);
 
-                setDiemNangLuc(response.data.results['diemNangLuc']);
+                // setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
+                console.log('\n\tResultScreen: DiemTNTHPT:', response.data.results['diemTNTHPT']);
                 setDiemTBTHPT(response.data.results['diemTBTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);

@@ -12,19 +12,19 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     // <MajorPicker/>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="MainScreen"
-            component={MainScreen}
-          />
-          <Stack.Screen name="ExtraScoreScreen"
-            component={ExtraScoreScreen}
-          />
-          <Stack.Screen name="ResultScreen"
-            component={ResultScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="MainScreen"
+          component={MainScreen}
+        />
+        <Stack.Screen name="ExtraScoreScreen"
+          component={ExtraScoreScreen}
+        />
+        <Stack.Screen name="ResultScreen"
+          component={ResultScreen}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
