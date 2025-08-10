@@ -1,332 +1,305 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView, TextInput, TouchableOpacity, Modal, Pressable } from 'react-native';
-import { Picker } from "@react-native-picker/picker"
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, StyleSheet } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 
-import { styles } from './DoiTuongScreenStyleSheet';
+const DoiTuong5Screen = () => {
+    // State for inputs
+    const [diemPhongVan, setDiemPhongVan] = useState(''); // Comma-separated string
+    const [diemBaiLuan, setDiemBaiLuan] = useState('');
+    const [chungChiTA, setChungChiTA] = useState('IELTS');
+    const [diemChungChiTA, setDiemChungChiTA] = useState('');
+    const [loaiChuongTrinhTHPT, setLoaiChuongTrinhTHPT] = useState('vietnam');
+    const [diemTohopTHPT, setDiemTohopTHPT] = useState('');
+    const [diemChungChiQuocTe, setDiemChungChiQuocTe] = useState('');
+    const [diemTB3Nam, setDiemTB3Nam] = useState('');
 
-import toHopMonData from './ToHopMon.json';
-import nganhXetTuyenData from './NganhXetTuyen.json';
+    // State for results
+    const [result, setResult] = useState(null);
+    const [error, setError] = useState(null);
 
-const DoiTuong5Screen = ({ DATA_DiemHocLuc, setDATA_DiemHocLuc }) => {
+    const handleSubmit = async () => {
+        // Reset previous results
+        setResult(null);
+        setError(null);
 
-    const handleUpdateDATA = (index, value) => {
-        setDATA_DiemHocLuc(prev => ({
-            ...prev,
-            [index]: value,
-        }));
+        // --- Input Validation ---
+        if (!diemPhongVan.trim() || !diemBaiLuan.trim() || !diemChungChiTA.trim() || !diemTB3Nam.trim()) {
+            Alert.alert("Lỗi", "Vui lòng điền đầy đủ các trường thông tin bắt buộc.");
+            return;
+        }
+
+        const diemPhongVanArray = diemPhongVan.split(',').map(item => parseFloat(item.trim())).filter(val => !isNaN(val));
+        if (diemPhongVanArray.length === 0) {
+            Alert.alert("Lỗi", "Điểm phỏng vấn không hợp lệ. Vui lòng nhập các số, phân cách bằng dấu phẩy.");
+            return;
+        }
+
+        const body = {
+            diemPhongVan: diemPhongVanArray,
+            diemBaiLuan: parseFloat(diemBaiLuan),
+            chungChiTA,
+            diemChungChiTA: parseFloat(diemChungChiTA),
+            loaiChuongTrinhTHPT,
+            diemTB3Nam: parseFloat(diemTB3Nam),
+            // Conditionally add scores based on program type
+            ...(loaiChuongTrinhTHPT === 'vietnam' && { diemTohopTHPT: parseFloat(diemTohopTHPT) }),
+            ...(loaiChuongTrinhTHPT === 'nuocngoai_co_cc' && { diemChungChiQuocTe: parseFloat(diemChungChiQuocTe) }),
+        };
+
+        // --- API Call ---
+        try {
+            // !!! IMPORTANT: Replace with your actual backend IP address !!!
+            const response = await fetch('http://192.168.20.245:5555/api/tinhDiemDoiTuong_5', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                setResult(data.results);
+            } else {
+                setError(data.message || 'Có lỗi xảy ra từ server.');
+                Alert.alert("Lỗi Server", data.message || 'Không thể tính toán. Vui lòng kiểm tra lại dữ liệu.');
+            }
+        } catch (e) {
+            console.error(e);
+            setError('Không thể kết nối tới server. Vui lòng kiểm tra lại địa chỉ IP và đảm bảo server đang chạy.');
+            Alert.alert("Lỗi Kết Nối", 'Không thể kết nối tới server. Vui lòng kiểm tra lại địa chỉ IP và đảm bảo server đang chạy.');
+        }
     };
 
-    useEffect(() => {
-        setDATA_DiemHocLuc(null)
-        handleUpdateDATA('doiTuong', 5)
-    }, []);
-
-
-    const nganhXetTuyen = nganhXetTuyenData;
-    const toHopMon = toHopMonData;
-
-    const [nganh, setNganh] = useState(null);
-
-    let monBatBuoc_List = [];
-    let monTuChon_List = [];
-    let monTatCa_List = [];
-
-    function layDanhSachMon(nganh) {
-        if (!nganh) return [];
-        const toHopMon_List = nganh.toHopMon.split(' - ');
-        const temp_mon_List = toHopMon_List.flatMap(id =>
-            toHopMon[id] || []
-        );
-        const mon_List = [...new Set(temp_mon_List)];
-        monTatCa_List = mon_List;
-        monBatBuoc_List = mon_List.slice(0, 2);
-        monTuChon_List = mon_List.slice(2);
-
-        return mon_List;
-    }
-
-
-    const [TotNghiepTHPTChoice, setTotNghiepTHPTChoice] = useState(1);
-
-    const [ChungChi, setChungChi] = useState(null);
-
-    const [CCTA, setCCTA] = useState(null);
-
-    const [ModalList, setModalList] = useState(null);
-
-    const [ModalVisible, setModalVisible] = useState(false);
-
-    const ChungChiList = ['SAT', 'ACT', 'IB', 'A-LEVEL'];
-
-    const CCTAList = ['IELTS', 'TOEFL iBT'];
-
-    const resetDiemTNTHPT = () => {
-        // setDATA_DiemHocLuc('diemChungChiQuocTe', null)
-        // setDATA_DiemHocLuc('chungChiQuocTe', null)
-        // setDATA_DiemHocLuc('diemThi_Mon1', null)
-        // setDATA_DiemHocLuc('diemThi_Mon2', null)
-        // setDATA_DiemHocLuc('diemThi_Mon3', null)
-    }
-
-    const ModalOption1 = () =>
-        <View style={styles.modalContent}>
-            {ChungChiList.map((choice, index) => (
-                <TouchableOpacity key={index} style={styles.choiceButton}
-                    onPress={() => {
-                        setModalVisible(false), setChungChi(choice)
-                        handleUpdateDATA('chungChiQuocTe', choice)
-                    }}>
-                    <Text style={styles.choiceText}>{choice}</Text>
-                </TouchableOpacity>
-            ))}
-        </View>
-
-    const ModalOption2 = () =>
-        <View style={styles.modalContent}>
-            {CCTAList.map((choice, index) => (
-                <TouchableOpacity key={index} style={styles.choiceButton}
-                    onPress={() => {
-                        setModalVisible(false), setCCTA(choice)
-                        handleUpdateDATA('CCTA', choice)
-                    }}>
-                    <Text style={styles.choiceText}>{choice}</Text>
-                </TouchableOpacity>
-            ))}
-        </View>
-
-    const renderModalList = () => {
-        switch (ModalList) {
-            case 1:
-                return <ModalOption1 />;
-            case 2:
-                return <ModalOption2 />;
+    const renderConditionalInputs = () => {
+        switch (loaiChuongTrinhTHPT) {
+            case 'vietnam':
+                return (
+                    <View>
+                        <Text style={styles.label}>Tổng điểm 3 môn tổ hợp TN THPT</Text>
+                        <TextInput
+                            style={styles.input}
+                            keyboardType="numeric"
+                            value={diemTohopTHPT}
+                            onChangeText={setDiemTohopTHPT}
+                            placeholder="Ví dụ: 24.5"
+                        />
+                    </View>
+                );
+            case 'nuocngoai_co_cc':
+                return (
+                    <View>
+                        <Text style={styles.label}>Điểm chứng chỉ quốc tế (thang 100)</Text>
+                        <TextInput
+                            style={styles.input}
+                            keyboardType="numeric"
+                            value={diemChungChiQuocTe}
+                            onChangeText={setDiemChungChiQuocTe}
+                            placeholder="Ví dụ: 85"
+                        />
+                    </View>
+                );
+            case 'nuocngoai_khong_cc':
+                return (
+                    <Text style={styles.infoText}>Điểm TN THPT sẽ được tính bằng Điểm học THPT quy đổi.</Text>
+                );
             default:
-                return;
+                return null;
         }
-    }
+    };
 
     return (
-        <ScrollView style={{ width: '100%' }}>
-            <View style={styles.container}>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.titleText}>
-                        {'Thí Sinh Dự Tính Du Học Nước Ngoài,\nTheo Chương Trình Chuyển Tiếp Quốc Tế'}
-                    </Text>
+        <ScrollView style={styles.container}>
+            <Text style={styles.title}>Tính điểm xét tuyển - Đối tượng 5</Text>
+
+            <Text style={styles.label}>Điểm phỏng vấn (cách nhau bằng dấu phẩy)</Text>
+            <TextInput
+                style={styles.input}
+                value={diemPhongVan}
+                onChangeText={setDiemPhongVan}
+                placeholder="Ví dụ: 80, 85, 90"
+            />
+
+            <Text style={styles.label}>Điểm bài luận</Text>
+            <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={diemBaiLuan}
+                onChangeText={setDiemBaiLuan}
+                placeholder="Ví dụ: 88"
+            />
+
+            <Text style={styles.label}>Loại chứng chỉ Tiếng Anh</Text>
+            <RNPickerSelect
+                onValueChange={(value) => setChungChiTA(value)}
+                items={[
+                    { label: 'IELTS', value: 'IELTS' },
+                    { label: 'TOEFL', value: 'TOEFL' },
+                ]}
+                style={pickerSelectStyles}
+                value={chungChiTA}
+                placeholder={{}}
+            />
+
+            <Text style={styles.label}>Điểm chứng chỉ Tiếng Anh</Text>
+            <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={diemChungChiTA}
+                onChangeText={setDiemChungChiTA}
+                placeholder={chungChiTA === 'IELTS' ? "Ví dụ: 7.0" : "Ví dụ: 105"}
+            />
+
+            <Text style={styles.label}>Điểm trung bình 3 năm THPT (theo tổ hợp)</Text>
+            <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={diemTB3Nam}
+                onChangeText={setDiemTB3Nam}
+                placeholder="Ví dụ: 8.5"
+            />
+
+            <Text style={styles.label}>Loại chương trình THPT</Text>
+            <RNPickerSelect
+                onValueChange={(value) => setLoaiChuongTrinhTHPT(value)}
+                items={[
+                    { label: 'THPT Việt Nam', value: 'vietnam' },
+                    { label: 'THPT Nước ngoài (có chứng chỉ quốc tế)', value: 'nuocngoai_co_cc' },
+                    { label: 'THPT Nước ngoài (không có chứng chỉ)', value: 'nuocngoai_khong_cc' },
+                ]}
+                style={pickerSelectStyles}
+                value={loaiChuongTrinhTHPT}
+                placeholder={{}}
+            />
+
+            {renderConditionalInputs()}
+
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Tính Điểm</Text>
+            </TouchableOpacity>
+
+            {result && (
+                <View style={styles.resultContainer}>
+                    <Text style={styles.resultTitle}>Kết quả tính điểm</Text>
+                    <Text style={styles.resultText}>Điểm học lực (kết quả cuối cùng): <Text style={styles.resultValue}>{result.diemHocLuc}</Text></Text>
+                    <Text style={styles.resultInfo}>Chi tiết:</Text>
+                    <Text style={styles.resultInfo}>- Điểm năng lực: {result.diemNangLuc}</Text>
+                    <Text style={styles.resultInfo}>- Điểm TNTHPT (quy đổi): {result.diemTNTHPTQuyDoi}</Text>
+                    <Text style={styles.resultInfo}>- Điểm học THPT (quy đổi): {result.diemHocTHPTQuyDoi}</Text>
                 </View>
+            )}
 
-                <View style={styles.body}>
-                    <View style={styles.inputField}>
-                        <Text style={styles.inputFieldTitle}>Ngành Xét Tuyển</Text>
-
-                        <Picker
-                            selectedValue={nganh}
-                            onValueChange={(item) => {
-                                handleUpdateDATA("danhSachMon", layDanhSachMon(item))
-                                handleUpdateDATA("danhSachToHopMon", item.toHopMon)
-                                setNganh(item)
-                            }}
-                            style={[styles.inputFieldInput, {
-                                height: 50,
-                                width: '100%',
-                                marginLeft: 0,
-                            }]}
-                            dropdownIconColor="#333"
-                        >
-                            <Picker.Item label="-- Chọn mã ngành --" value={null} />
-
-                            {nganhXetTuyen.map((item) => (
-                                <Picker.Item
-                                    key={item.id}
-                                    label={`${item.id} - ${item.nganh}`}
-                                    value={item}
-                                />
-                            ))}
-
-                        </Picker>
-
-                        {nganh && (
-                            <View style={{ width: '100%', marginTop: 15 }}>
-                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Text>Tổ hợp môn xét tuyển:</Text>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 17}}>{nganh.toHopMon}</Text>
-                                </View>
-                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Text>Các môn khả dụng:</Text>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 15}}>{layDanhSachMon(nganh).join(" - ")}</Text>
-                                </View>
-                            </View>
-                        )}
-                    </View>
-
-                    {
-                        nganh == null ? null :
-                            <View style = {{width: '100%'}}>
-                                <View style={styles.inputField}>
-                                    <Text style={styles.inputFieldTitle}>Điểm Năng Lực</Text>
-                                    <View style={styles.inputFieldRow}>
-                                        <Text style={styles.inputFieldInputLabel}>Điểm Phỏng Vấn</Text>
-                                        <TextInput style={styles.inputFieldInput}
-                                            placeholder='00.00'
-                                            placeholderTextColor={'#969696ff'}
-                                            keyboardType="numeric"
-                                            onChangeText={(text) => handleUpdateDATA('diemPhongVan', parseFloat(text))}
-                                        />
-                                    </View>
-                                    <View style={styles.inputFieldRow}>
-                                        <Text style={styles.inputFieldInputLabel}>Điểm Bài Luận</Text>
-                                        <TextInput style={styles.inputFieldInput}
-                                            placeholder='00.00'
-                                            placeholderTextColor={'#969696ff'}
-                                            keyboardType="numeric"
-                                            onChangeText={(text) => handleUpdateDATA('diemBaiLuan', parseFloat(text))}
-                                        />
-                                    </View>
-                                    <View style={[styles.inputFieldRow]}>
-                                        <Text style={[styles.inputFieldInputLabel, { flex: 2 }]}>Điểm CCTA</Text>
-                                        <TextInput style={[styles.inputFieldInput, { flex: 1 }]}
-                                            placeholder='00.00'
-                                            placeholderTextColor={'#969696ff'}
-                                            keyboardType="numeric"
-                                            onChangeText={(text) => handleUpdateDATA('diemCCTA', parseFloat(text))}
-                                        />
-                                        <TouchableOpacity style={[styles.inputFieldInput, { flex: 1 }]}
-                                            onPress={() => { setModalVisible(true), setModalList(2) }}>
-                                            <Text style={[styles.inputFieldPickerText, CCTA != null && { color: '#000000' }]}>
-                                                {CCTA != null ? CCTA : '--'}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-
-                                <View style={styles.inputField}>
-                                    <Text style={styles.inputFieldTitle}>Điểm Tốt Nghiệp THPT</Text>
-                                    <TouchableOpacity style={[styles.inputFieldRow, { marginBottom: 12, }]}
-                                        onPress={() => {
-                                            setTotNghiepTHPTChoice(1)
-                                            resetDiemTNTHPT()
-                                        }}>
-                                        <View style={[styles.radioButton, TotNghiepTHPTChoice == 1 && styles.radioButtonSelected]} />
-                                        <Text style={[styles.radioText, TotNghiepTHPTChoice == 1 && styles.radioTextSelected]}>
-                                            Thí sinh tốt nghiệp THPT Việt Nam
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.inputFieldRow, { marginBottom: 12, }]}
-                                        onPress={() => {
-                                            setTotNghiepTHPTChoice(2)
-                                            resetDiemTNTHPT()
-                                        }}>
-                                        <View style={[styles.radioButton, TotNghiepTHPTChoice == 2 && styles.radioButtonSelected]} />
-                                        <Text style={[styles.radioText, TotNghiepTHPTChoice == 2 && styles.radioTextSelected]}>
-                                            {'Thí sinh tốt nghiệp THPT nước ngoài và\nCÓ chứng chỉ tuyển sinh quốc tế'}
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.inputFieldRow, { marginBottom: 16, }]}
-                                        onPress={() => {
-                                            setTotNghiepTHPTChoice(3)
-                                            resetDiemTNTHPT()
-                                        }}>
-                                        <View style={[styles.radioButton, TotNghiepTHPTChoice == 3 && styles.radioButtonSelected]} />
-                                        <Text style={[styles.radioText, TotNghiepTHPTChoice == 3 && styles.radioTextSelected]}>
-                                            {'Thí sinh tốt nghiệp THPT nước ngoài và\nKHÔNG CÓ chứng chỉ tuyển sinh quốc tế'}
-                                        </Text>
-                                    </TouchableOpacity>
-                                    {
-                                        TotNghiepTHPTChoice == 1 ?
-                                            <View style={{ width: '100%' }}>
-                                                {monBatBuoc_List?.map((Mon, index) => (
-                                                    <View key={`Mon-${index}`} style={styles.inputFieldRow}>
-                                                        <Text style={[styles.inputFieldInputLabel, { flex: 1 }]}>Điểm Thi {Mon} *</Text>
-                                                        <TextInput
-                                                            style={[styles.inputFieldInput, { flex: 1 }]}
-                                                            placeholder="00.00"
-                                                            placeholderTextColor="#969696"
-                                                            keyboardType="numeric"
-                                                            onChangeText={(text) => handleUpdateDATA(`diemThi_${Mon}`, parseFloat(text))}
-                                                        />
-                                                    </View>
-                                                ))}
-                                                {monTuChon_List?.map((Mon, index) => (
-                                                    <View key={`Mon-${index}`} style={styles.inputFieldRow}>
-                                                        <Text style={[styles.inputFieldInputLabel, { flex: 1 }]}>Điểm Thi {Mon}</Text>
-                                                        <TextInput
-                                                            style={[styles.inputFieldInput, { flex: 1 }]}
-                                                            placeholder="00.00"
-                                                            placeholderTextColor="#969696"
-                                                            keyboardType="numeric"
-                                                            onChangeText={(text) => handleUpdateDATA(`diemThi_${Mon}_TC`, parseFloat(text))}
-                                                        />
-                                                    </View>
-                                                ))}
-                                            </View>
-                                            : TotNghiepTHPTChoice == 2 ?
-                                                <View style={[styles.inputFieldRow]}>
-                                                    <Text style={[styles.inputFieldInputLabel, { flex: 2 }]}>Điểm Chứng Chỉ</Text>
-                                                    <TextInput style={[styles.inputFieldInput, { flex: 1 }]}
-                                                        placeholder='00.00'
-                                                        placeholderTextColor={'#969696ff'}
-                                                        keyboardType="numeric"
-                                                        onChangeText={(text) => handleUpdateDATA('diemChungChiQuocTe', parseFloat(text))}
-                                                    />
-                                                    <TouchableOpacity style={[styles.inputFieldInput, { flex: 1 }]}
-                                                        onPress={() => { setModalVisible(true), setModalList(1) }}>
-                                                        <Text style={[styles.inputFieldPickerText, ChungChi != null && { color: '#000000' }]}>
-                                                            {ChungChi != null ? ChungChi : '--'}
-                                                        </Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                                :
-                                                <View style={styles.staticField}>
-                                                    <Text style={styles.staticFieldText}>{'= [Điểm Học THPT]'}</Text>
-                                                </View>
-
-                                    }
-                                </View>
-
-                                <View style={styles.inputField}>
-                                    <View style={styles.inputFieldRow}>
-                                        <Text style={[styles.inputFieldTitle, { flex: 3, marginBottom: 5 }]}>Điểm Học THPT</Text>
-                                        {[10, 11, 12].map((Mon, index) => (
-                                            <Text key={`Lop-${index}`} style={[styles.inputFieldTableLabel, { flex: 1 }]}>{Mon}</Text>
-                                        ))}
-                                    </View>
-
-                                    {monTatCa_List.map((mon) => (
-                                        <View key={`diemTBLop-${mon}`} style={styles.inputFieldRow}>
-                                            <Text style={[styles.inputFieldInputLabel, { flex: 3 }]}>
-                                                Điểm TB {mon}
-                                            </Text>
-                                            {
-                                                [10, 11, 12].map((lop) => (
-                                                    <TextInput
-                                                        key={`diemMon_${mon}_${lop}`}
-                                                        style={[styles.inputFieldInput, { flex: 1 }]}
-                                                        placeholder="00.00"
-                                                        placeholderTextColor="#969696"
-                                                        keyboardType="numeric"
-                                                        onChangeText={(text) => handleUpdateDATA(`diemTB_${mon}_${lop}`, parseFloat(text))}
-                                                    />
-                                                ))
-                                            }
-                                        </View>
-                                    ))}
-
-                                </View>
-                            </View>
-                    }
+            {error && (
+                 <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>{error}</Text>
                 </View>
-
-                <Modal animationType="fade"
-                    transparent={true}
-                    visible={ModalVisible}
-                    onRequestClose={() => setModalVisible(false)}>
-                    <Pressable style={styles.modalOverlay}
-                        onPress={() => setModalVisible(false)}>
-                        {renderModalList()}
-                    </Pressable>
-                </Modal>
-            </View>
+            )}
         </ScrollView>
-    )
+    );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: '#f7f8fa',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#333',
+        textAlign: 'center',
+        marginBottom: 25,
+    },
+    label: {
+        fontSize: 16,
+        color: '#555',
+        marginBottom: 8,
+        fontWeight: '500',
+    },
+    input: {
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 8,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        fontSize: 16,
+        marginBottom: 20,
+        color: '#333',
+    },
+    button: {
+        backgroundColor: '#007bff',
+        paddingVertical: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 20,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    infoText: {
+        fontSize: 15,
+        color: '#666',
+        fontStyle: 'italic',
+        textAlign: 'center',
+        marginVertical: 10,
+    },
+    resultContainer: {
+        marginTop: 20,
+        padding: 15,
+        backgroundColor: '#e9f7ef',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#d0e9dd',
+    },
+    resultTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#1e4620',
+        marginBottom: 10,
+    },
+    resultText: {
+        fontSize: 16,
+        color: '#333',
+        marginBottom: 5,
+    },
+    resultValue: {
+        fontWeight: 'bold',
+        color: '#28a745',
+    },
+    resultInfo: {
+        fontSize: 16,
+        color: '#444',
+        marginLeft: 10,
+        lineHeight: 24,
+    },
+    errorContainer: {
+        marginTop: 20,
+        padding: 15,
+        backgroundColor: '#f8d7da',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#f5c6cb',
+    },
+    errorText: {
+        color: '#721c24',
+        fontSize: 16,
+        textAlign: 'center',
+    },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        ...styles.input,
+    },
+    inputAndroid: {
+        ...styles.input,
+    },
+});
 
 export default DoiTuong5Screen;
