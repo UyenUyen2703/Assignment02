@@ -117,6 +117,23 @@ function QuyDoiDiemChungChiQuocTe_UTS() {
     return 10;
 }
 
+//API get điểm chuẩn
+app.get('/api/getDiemChuan', (req, res) => {
+    try {
+        const sql = "SELECT * FROM DiemChuan";
+        db.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error fetching Diem Chuan:', err);
+                return res.status(500).json({ success: false, message: 'Error fetching data' });
+            }
+            res.json({ success: true, result: results });
+        });
+    } catch (err) {
+        console.error('Error fetching Diem Chuan:', err);
+        res.status(500).json({ success: false, message: 'Error fetching data' });
+    }
+});
+
 //------------------------------------------------------------------------------//
 //API get Đối tượng ưu tiên
 app.get('/api/getDoiTuongUuTien', (req, res) => {
@@ -613,7 +630,17 @@ app.post('/api/tinhDiemDoiTuong_6', (req, res) => {
         );
         // ===== CÁC ĐIỂM KHÁC =====
         let diemXetTuyen = diemHocLuc + diemUuTien + diemCong;
-
+        // Kiểm tra điểm nhập vào phải nằm trong khoảng 0 đến 10
+        for (const key in data) {
+            if (key.startsWith('diem') && typeof data[key] === 'number') {
+                if (data[key] < 0 || data[key] > 10) {
+                    return res.status(400).json({
+                        success: false,
+                        message: `Giá trị ${key} phải nằm trong khoảng 0 đến 10.`
+                    });
+                }
+            }
+        }
         res.status(200).json({
             success: true,
             results: {
@@ -631,8 +658,6 @@ app.post('/api/tinhDiemDoiTuong_6', (req, res) => {
         res.status(500).json({ message: "Lỗi xử lý", error: err.message });
     }
 });
-
-
 
 //------------------------------------------------------------------------------//
 //  ĐÓI TƯỢNG 7

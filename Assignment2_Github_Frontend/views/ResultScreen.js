@@ -10,7 +10,7 @@ import axios from "axios";
 const ResultScreen = ({ params, route }) => {
 
     //ĐỊA CHỈ IP ------------------------------------//
-    const apiAddress = 'http://192.168.1.190:5555/api';
+    const apiAddress = 'http://10.106.18.186:5555/api';
     //-----------------------------------------------//
 
     const DATA_DiemHocLuc = route.params?.DATA_DiemHocLuc;
@@ -236,7 +236,12 @@ const ResultScreen = ({ params, route }) => {
         } catch (error) {
             console.error("Lỗi khi gửi dữ liệu: ", error);
             if (error.response && error.response.status === 400 && error.response.data && error.response.data.message) {
-                Alert.alert('Thông báo', error.response.data.message);
+                Alert.alert('Thông báo', error.response.data.message, [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('MainScreen')
+                    }
+                ]);
             } else {
                 Alert.alert("Lỗi khi gửi dữ liệu", error.message);
             }

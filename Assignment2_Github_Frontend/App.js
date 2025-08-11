@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './views/MainScreen';
 import ExtraScoreScreen from './views/ExtraScoreScreen';
 import ResultScreen from './views/ResultScreen';
+import DoiTuong6Screen from './views/DoiTuongScreen/DoiTuong6Screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
         <Stack.Screen name="ResultScreen"
           component={ResultScreen}
         />
+        <Stack.Screen name="DoiTuong6Screen" component={DoiTuong6Screen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
