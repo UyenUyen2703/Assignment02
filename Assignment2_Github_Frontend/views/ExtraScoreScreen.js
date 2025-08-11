@@ -10,7 +10,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const ExtraScoreScreen = ({ params, route }) => {
 
     const DATA_DiemHocLuc = route.params?.DATA_DiemHocLuc;
-    const apiAddress = 'http://10.106.18.186:5555/api';
+    const apiAddress = 'http://10.106.32.78:5555/api';
     let coMonAnh = DATA_DiemHocLuc.danhSachMon?.includes("Anh");
     const [keyboardOffset, setKeyboardOffset] = useState(0);
 

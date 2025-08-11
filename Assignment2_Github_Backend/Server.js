@@ -369,46 +369,133 @@ app.post("/api/tinhDiemDoiTuong_3", (req, res) => {
 //  ĐÓI TƯỢNG 4
 
 app.post("/api/tinhDiemDoiTuong_4", (req, res) => {
+    const data = req.body;
+    console.log("DATA nhận từ client:", data);
 
-    let data = req.body;
-    console.log('\n\tDATA truyền đến từ frontend/ResultScreen/TinhDiemDoiTuong()');
-    console.log(data);
-    try {
-        let diemNangLuc = 999.9999;
-        let diemTNTHPT = 999.9999;
-        let diemTHPT = 999.9999;
-        let diemHocLuc = 999.9999;
-        let diemCong = 999.9999;
-        let diemUuTien = 999.9999;
-        let diemXetTuyen = 999.9999;
+    const {
+        certificate_type,
+        original_score,
+        diemCongThanhTich,
+        diemUuTien_KhuVuc,
+        diemUuTien_DoiTuong,
+        nganhInfo
+    } = data;
 
+    let diemUuTienDoiTuongValue = 0;
+    if (diemUuTien_DoiTuong && typeof diemUuTien_DoiTuong === "object") {
+        diemUuTienDoiTuongValue = parseFloat(diemUuTien_DoiTuong.diem_cong) || 0;
+    } else {
+        diemUuTienDoiTuongValue = parseFloat(diemUuTien_DoiTuong) || 0;
+    }
+    // 1. Lấy converted_score từ DB
+    const sql = `
+        SELECT converted_score 
+        FROM International_Admissions_Certificate 
+        WHERE certificate_type = ? AND original_score = ? 
+        LIMIT 1
+    `;
+    db.query(sql, [certificate_type, original_score], (err, results) => {
+        if (err) {
+            console.error("Lỗi truy vấn DB:", err);
+            return res.status(500).json({ success: false, message: "Lỗi DB" });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, message: "Không tìm thấy chứng chỉ" });
+        }
 
-        // CODE TÍNH TOÁN
+        const diemNangLuc = results[0].converted_score;
 
+        const monChinh = nganhInfo.monChinh || [];
+        const monTuChon = nganhInfo.monTuChon || [];
 
-        res.status(200).json({
-            success: true,
-            results: {
-                //KẾT QUẢ TRẢ VỀ
-                diemNangLuc: diemNangLuc.toFixed(3),
-                diemTNTHPT: diemTNTHPT.toFixed(3),
-                diemTHPT: diemTHPT.toFixed(3),
-                diemHocLuc: diemHocLuc.toFixed(3),
-                diemCong: diemCong.toFixed(3),
-                diemUuTien: diemUuTien.toFixed(3),
-                diemXetTuyen: diemXetTuyen.toFixed(3),
+        // ===== 2. TÍNH ĐIỂM TNTHPT =====
+        let diemThiMonChinh1 = parseFloat(data[`diemThi_${monChinh[0]}`]) || 0;
+        let diemThiMonChinh2 = parseFloat(data[`diemThi_${monChinh[1]}`]) || 0;
+
+        let diemThiMonTuChon = 0;
+        monTuChon.forEach(monTC => {
+            let diemTC = parseFloat(data[`diemThi_${monTC}_TC`]) || 0;
+            if (diemTC > diemThiMonTuChon) diemThiMonTuChon = diemTC;
+        });
+
+        let diemTNTHPT = ((diemThiMonChinh1 + diemThiMonChinh2 + diemThiMonTuChon) / 3) * 10;
+
+        // ===== 3. TÍNH ĐIỂM THPT =====
+        const avg3Years = (mon) => {
+            let tong = 0, count = 0;
+            [10, 11, 12].forEach(nam => {
+                let diem = parseFloat(data[`diemTB_${mon}_${nam}`]) || 0;
+                if (data[`diemTB_${mon}_${nam}`] != null && !isNaN(diem)) {
+                    tong += diem;
+                    count++;
+                }
+            });
+            return count > 0 ? (tong / count) : 0;
+        };
+
+        let avgMonChinh1 = avg3Years(monChinh[0]);
+        let avgMonChinh2 = avg3Years(monChinh[1]);
+
+        let diemTHPT = 0;
+        monTuChon.forEach(monTC => {
+            let avgTC = avg3Years(monTC);
+            let tong3Mon = avgMonChinh1 + avgMonChinh2 + avgTC;
+            let diemTBToHop = tong3Mon / 3 * 10;
+            if (diemTBToHop > diemTHPT) {
+                diemTHPT = diemTBToHop;
             }
         });
 
-    } catch (error) {
-        console.error("Error in calculation:", error);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error during calculation"
+        // ===== 4. TÍNH CÁC ĐIỂM KHÁC =====
+        const tinhDiemCong = (diemHocLuc, diemCongThanhTich) => {
+            if ((diemHocLuc + diemCongThanhTich) < 100) {
+                return diemCongThanhTich;
+            } else {
+                return 100 - diemHocLuc;
+            }
+        };
+
+        const tinhDiemUuTien = (diemHocLuc, diemCong, diemUuTien_KV, diemUuTien_DT) => {
+            const diemUuTienQuyDoi = ((diemUuTien_KV || 0) + (diemUuTien_DT || 0)) / 3 * 10;
+            console.log("diemUUuTienKhuVuc:", diemUuTien_KV);
+            console.log("diemUUienDoiTuong:", diemUuTien_DT);
+            console.log("diemUuTienQuyDoi:", diemUuTienQuyDoi);
+            if ((diemHocLuc + diemCong) < 75) {
+                return diemUuTienQuyDoi;
+            } else {
+                return ((100 - diemHocLuc - diemCong) / 25) * diemUuTienQuyDoi;
+            }
+        };
+
+        let diemHocLuc = diemNangLuc * 0.7 + diemTNTHPT * 0.2 + diemTHPT * 0.1;
+        let congThanhTich = parseFloat(diemCongThanhTich) || 0;
+        let diemCong = tinhDiemCong(diemHocLuc, congThanhTich);
+
+        let diemUuTien = tinhDiemUuTien(
+            diemHocLuc,
+            diemCong,
+            parseFloat(diemUuTien_KhuVuc) || 0,
+            diemUuTienDoiTuongValue
+        );
+
+        let diemXetTuyen = diemHocLuc + diemCong + diemUuTien;
+
+        // ===== 5. Trả kết quả =====
+        res.status(200).json({
+            success: true,
+            results: {
+                diemNangLuc: diemNangLuc.toFixed(2),
+                diemTHPT: diemTHPT.toFixed(2),
+                diemTNTHPT: diemTNTHPT.toFixed(2),
+                diemHocLuc: diemHocLuc.toFixed(2),
+                diemCong: diemCong.toFixed(2),
+                diemUuTien: diemUuTien.toFixed(2),
+                diemXetTuyen: diemXetTuyen.toFixed(2)
+            }
         });
-        res.status(400).send("Dữ liệu không hợp lệ");
-    }
+    });
 });
+
 
 //------------------------------------------------------------------------------//
 //  ĐÓI TƯỢNG 5

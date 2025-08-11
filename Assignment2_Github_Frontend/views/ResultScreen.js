@@ -10,7 +10,7 @@ import axios from "axios";
 const ResultScreen = ({ params, route }) => {
 
     //ĐỊA CHỈ IP ------------------------------------//
-    const apiAddress = 'http://10.106.18.186:5555/api';
+    const apiAddress = 'http://10.106.32.78:5555/api';
     //-----------------------------------------------//
 
     const DATA_DiemHocLuc = route.params?.DATA_DiemHocLuc;
@@ -78,7 +78,7 @@ const ResultScreen = ({ params, route }) => {
                     return;
                 }
             }
-            TinhDiemDoiTuong6();
+            TinhDiemDoiTuong4();
         } else {
             GoiAPITinhDiemXetTuyen();
         }
@@ -174,7 +174,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setdiemTHPT(response.data.results['diemTHPT']);
+                setDiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -200,7 +200,7 @@ const ResultScreen = ({ params, route }) => {
 
                 setDiemNangLuc(response.data.results['diemNangLuc']);
                 setDiemTNTHPT(response.data.results['diemTNTHPT']);
-                setdiemTHPT(response.data.results['diemTHPT']);
+                setDiemTHPT(response.data.results['diemTHPT']);
                 setDiemHocLuc(response.data.results['diemHocLuc']);
                 setDiemCong(response.data.results['diemCong']);
                 setDiemUuTien(response.data.results['diemUuTien']);
@@ -379,10 +379,10 @@ const ResultScreen = ({ params, route }) => {
                     </View>
 
                     <View style={{ width: '100%', paddingLeft: 20, marginVertical: 10 }}>
-                        {/* <View style={styles.resultFieldRow}>
+                        <View style={styles.resultFieldRow}>
                             <Text style={styles.resultFieldText}>Điểm Năng Lực:</Text>
                             <Text style={styles.resultFieldText}>{diemNangLuc}</Text>
-                        </View> */}
+                        </View>
                         <View style={styles.resultFieldRow}>
                             <Text style={styles.resultFieldText}>Điểm Tốt Nghiệp THPT:</Text>
                             <Text style={styles.resultFieldText}>{diemTNTHPT}</Text>
